@@ -1,0 +1,25 @@
+.btn-group {
+  width: 100%;
+  margin: 5px;
+}
+
+#button-group-two {
+  padding-right: 30px;
+  padding-left: 30px;
+}
+
+.taclass {
+  padding-right: 55px;
+  padding-left: 55px;
+}
+
+#type-select-buttons {
+  background-color: #8d0b2f;
+  border-color: #8d0b2f;
+  box-shadow: none;
+}
+
+#type-select-buttons:focus {
+  outline: 3px solid #b20837;
+  box-shadow: none;
+}
