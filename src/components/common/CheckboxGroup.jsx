@@ -16,6 +16,7 @@ function CheckboxGroup(props) {
   const itemNames = Object.keys(items);
 
   const handleUpdate = (e) => {
+    debugger;
     const { value } = e.target;
     const copyChosen = [...chosen];
     const index = copyChosen.findIndex((chose) => chose === value);
