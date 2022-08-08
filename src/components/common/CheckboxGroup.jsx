@@ -16,7 +16,6 @@ function CheckboxGroup(props) {
   const itemNames = Object.keys(items);
 
   const handleUpdate = (e) => {
-    debugger;
     const { value } = e.target;
     const copyChosen = [...chosen];
     const index = copyChosen.findIndex((chose) => chose === value);
@@ -25,7 +24,7 @@ function CheckboxGroup(props) {
     update(copyChosen);
   };
   const checkChecked = (itemName) => {
-    if (value && value[name] && value[name].includes(Case.pascal(itemName))) {
+    if (value && value[name] && value[name].includes(itemName)) {
       return true;
     }
     return false;

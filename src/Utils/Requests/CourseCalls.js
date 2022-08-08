@@ -3,7 +3,6 @@ import axios from "axios";
 import getEnum from "../Enums";
 
 const baseUrl = process.env.REACT_APP_SCHEDULING_API;
-debugger;
 export const GETCourses = async () => {
   try {
     const response = await axios({
