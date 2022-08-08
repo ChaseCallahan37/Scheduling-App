@@ -1,4 +1,5 @@
 import React from "react";
+import Case from "case";
 import "./TypeSelector.css";
 
 function TypeSelector(props) {
@@ -19,7 +20,7 @@ function TypeSelector(props) {
             className="btn btn-secondary"
             id="type-select-buttons"
           >
-            {item}
+            {Case.capital(item)}
           </button>
         ))}
     </div>
