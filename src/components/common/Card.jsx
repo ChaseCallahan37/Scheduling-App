@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Case from "case";
 import Calendar from "./Calendar";
-import { wrapInDivAndLabel } from "../../Utils/UtilFunctions";
 import LabelWithCount from "./RangeSelect";
 import { getRandomId } from "../../Utils/UtilFunctions";
 import List from "./List";
@@ -25,65 +24,18 @@ const Card = (props) => {
   };
 
   const createElement = (field) => {
-    let subFields;
     switch (field) {
-      case "info":
-        return wrapInDivAndLabel(field, <span> {item[field]}</span>);
-        break;
-      case "type":
-        return wrapInDivAndLabel(field, <label>{item[field]}</label>);
-        break;
-      case "constraints":
-        const constraintNames = item[field].map(
-          (constraint) => Object.keys(constraint)[0]
-        );
-        return wrapInDivAndLabel(
-          field,
-          <div>
-            {constraintNames.map((constraintName) => (
-              <div key={constraintName}>
-                <label>{Case.capital(constraintName)}: </label>
-                {item[field].map((constraint) => {
-                  if (constraint[constraintName]) {
-                    return (
-                      <List
-                        key={constraintName}
-                        items={constraint[constraintName]}
-                        name={constraintName}
-                      />
-                    );
-                  }
-                })}
-              </div>
-            ))}
-          </div>
-        );
-        break;
       case "availability":
-        return wrapInDivAndLabel(
-          field,
-          <Calendar availability={item.availability} />
-        );
+        return <Calendar availability={item.availability} />;
         break;
-      case "resources":
-        return wrapInDivAndLabel(
-          field,
-          <div>
-            <label key="instructor">
-              Instructors: <span>{item[field].instructors}</span>
-            </label>
-            <br></br>
-            <label key="tas">
-              Ta's: <span>{item[field].tas}</span>
-            </label>
-          </div>
-        );
-      case "teachingStyle":
-        return wrapInDivAndLabel(
-          field,
-          <span key={item[field]}>{Case.capital(item[field])}</span>
-        );
+
+      case "type":
+        return <span>{Case.capital(item[field])}</span>;
         break;
+
+      case "eventSize":
+        return <span>{Case.capital(item[field])}</span>;
+
       default:
         return null;
         break;
@@ -95,7 +47,15 @@ const Card = (props) => {
         {item && <label>{item.name}</label>}
       </div>
       <div key="body" className={styles.body}>
-        {item && fields.map((field) => createElement(field))}
+        {item &&
+          fields.map((field) =>
+            field !== "id" && field !== "name" ? (
+              <div>
+                <label className="label">{Case.capital(field)}</label>
+                {createElement(field)}
+              </div>
+            ) : null
+          )}
       </div>
       <div key="footer" className={styles.footer}>
         <button className="button" onClick={() => onEdit(item.id)}>

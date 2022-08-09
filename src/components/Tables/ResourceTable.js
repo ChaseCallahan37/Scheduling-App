@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Card from "../common/Card";
-import CardPopup from "../common/CardPopup";
+import Popup from "../common/Popup";
 import ShowAvailability from "../common/ShowAvailability";
 import Resource from "./../../Classes/ResourceClass";
 import TypeSelector from "../common/TypeSelector";
@@ -76,7 +76,7 @@ const ResourceTable = () => {
           ))}
 
         {showBlank && (
-          <CardPopup
+          <Popup
             open={true}
             item={newResource}
             update={handleOnChange}
