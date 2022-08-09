@@ -1,12 +1,12 @@
-import Course from "../../Classes/CourseClass";
 import axios from "axios";
-import getEnum from "../Enums";
+import getEnum from "./Enums";
 
-const baseUrl = process.env.REACT_APP_SCHEDULING_API;
-export const GETCourses = async () => {
+// const baseUrl = process.env.REACT_APP_SCHEDULING_API;
+const baseUrl = process.env.REACT_APP_LOCAL_API;
+export const getEvents = async () => {
   try {
     const response = await axios({
-      url: `${baseUrl}/course`,
+      url: `${baseUrl}/event`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -20,10 +20,10 @@ export const GETCourses = async () => {
   }
 };
 
-export const createCourse = async (data) => {
+export const createEvent = async (data) => {
   try {
     const response = await axios({
-      url: `${baseUrl}/course`,
+      url: `${baseUrl}/event`,
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -38,10 +38,10 @@ export const createCourse = async (data) => {
   }
 };
 
-export const updateCourse = async (data) => {
+export const updateEvent = async (data) => {
   try {
     const response = await axios({
-      url: `${baseUrl}/course/${data.id}`,
+      url: `${baseUrl}/event/${data.id}`,
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -56,10 +56,10 @@ export const updateCourse = async (data) => {
   }
 };
 
-export const deleteCourse = async (id) => {
+export const deleteEvent = async (id) => {
   try {
     const response = await axios({
-      url: `${baseUrl}/course/${id}`,
+      url: `${baseUrl}/event/${id}`,
       method: "DELETE",
       headers: {
         Accept: "application/json",

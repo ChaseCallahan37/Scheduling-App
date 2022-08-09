@@ -1,12 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import BlankAvailability from "../common/BlankAvailability";
 import Card from "../common/Card";
-import { getResources } from "../../AppInfo/ResourceInfo";
-import {
-  POSTCourse,
-  GETCourses,
-  createCourse,
-} from "../../Utils/Requests/CourseCalls";
 
 class HomeTable extends Component {
   state = {
@@ -16,16 +9,7 @@ class HomeTable extends Component {
     resources: [],
   };
 
-  sendData = async () => {
-    const resources = getResources();
-    const data = {
-      resources: resources,
-    };
-    createCourse();
-
-    // const pulledCourses = await GETCourses();
-    // console.log(pulledCourses);
-  };
+  sendData = async () => {};
 
   render() {
     return (
@@ -35,7 +19,6 @@ class HomeTable extends Component {
         </button>
         <br></br>
         <br></br>
-        <BlankAvailability />
       </div>
     );
   }

@@ -1,22 +1,20 @@
 import { v4 as uuidv4 } from "uuid";
 
-class Resource {
+class Event {
   constructor(
-    resourceFields = {
+    courseFields = {
       id: uuidv4(),
       name: "",
       availability: [],
-      type: "",
       eventSize: "",
     }
   ) {
-    const { id, name, availability, type, eventSize } = resourceFields;
+    const { id, name, availability, eventSize } = courseFields;
     this.id = id;
     this.name = name;
     this.availability = availability;
-    this.type = type;
     this.eventSize = eventSize;
   }
 }
 
-export default Resource;
+export default Event;

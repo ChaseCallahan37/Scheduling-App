@@ -10,8 +10,7 @@ import getEnum from "./../../Utils/Enums";
 import TypeSelector from "./TypeSelector";
 import RangeSelect from "./RangeSelect";
 import CheckboxGroup from "./CheckboxGroup";
-import { GETCourses } from "../../Utils/Requests/CourseCalls";
-import { getCourses } from "./../../AppInfo/CourseInfo";
+import { getEvents } from "../../Utils/EventCalls";
 
 const Form = (props) => {
   const [isInstructor, setIsInstructor] = useState(true);
@@ -26,7 +25,7 @@ const Form = (props) => {
   useEffect(() => {
     const callCourses = async () => {
       const courses = {};
-      const data = await GETCourses();
+      const data = await getEvents();
       data.forEach(
         (course) => (courses[Case.camel(course.name)] = course.name)
       );

@@ -1,16 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {
-  getResources,
-  sendResource,
-  removeResource,
-} from "../../AppInfo/ResourceInfo";
 import Card from "../common/Card";
 import CardPopup from "../common/CardPopup";
 import ShowAvailability from "../common/ShowAvailability";
-import { v4 as uuidv4 } from "uuid";
-import BlankAvailability from "../common/BlankAvailability";
-import Time from "../../Classes/TimeClass";
-import { getCourses } from "../../AppInfo/CourseInfo";
 import Resource from "./../../Classes/ResourceClass";
 import TypeSelector from "../common/TypeSelector";
 import CheckboxGroup from "../common/CheckboxGroup";
@@ -25,7 +16,7 @@ const ResourceTable = () => {
 
   useEffect(() => {
     if (resources === null) {
-      const pulledResources = getResources();
+      const pulledResources = [];
       setResources(pulledResources);
     }
   });
@@ -40,16 +31,15 @@ const ResourceTable = () => {
     }
   };
   const handleSaveResource = () => {
-    sendResource({ ...newResource });
     setNewResource(new Resource());
     setShowBlank(false);
-    const pulledResources = getResources();
+    const pulledResources = [];
     setResources(pulledResources);
   };
   const handleCloseModal = () => {
     setShowBlank(false);
     setNewResource(new Resource());
-    const pulledResources = getResources();
+    const pulledResources = [];
     setResources(pulledResources);
   };
   const handleEditResource = (id) => {
