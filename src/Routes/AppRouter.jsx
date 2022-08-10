@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import EventTable from "../components/Tables/EventTable";
-import CourseHeader from "../components/common/Header";
+import Header from "../components/common/Header";
 import HomeTable from "../components/Tables/HomeTable";
 import ResourceTable from "../components/Tables/ResourceTable";
 import NotFoundTable from "../components/Tables/NotFoundTable";
@@ -11,7 +11,7 @@ class AppRouter extends Component {
   render() {
     return (
       <BrowserRouter>
-        <CourseHeader />
+        <Header />
         <Routes>
           <Route path="/" element={<HomeTable />} exact="true" />
           <Route path="/courses" element={<EventTable />} />

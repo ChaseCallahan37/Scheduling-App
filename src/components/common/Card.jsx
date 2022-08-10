@@ -9,6 +9,7 @@ const Card = (props) => {
   const { content, item, onEdit, onRemove } = props;
 
   const [showPopup, setShowPopup] = useState(false);
+  const [fields, setFields] = useState(Object.keys(item));
 
   const styles = {
     parentDiv: "card",
@@ -16,7 +17,6 @@ const Card = (props) => {
     body: "card-body text-wrap",
     footer: "card-footer",
   };
-  const fields = Object.keys(item);
 
   const askToDelete = () => {
     alert("Deleting now");
@@ -48,13 +48,15 @@ const Card = (props) => {
       </div>
       <div key="body" className={styles.body}>
         {item &&
-          fields.map((field) =>
-            field !== "id" && field !== "name" ? (
-              <div>
-                <label className="label">{Case.capital(field)}</label>
-                {createElement(field)}
-              </div>
-            ) : null
+          fields.map(
+            (field) =>
+              field !== "id" &&
+              field !== "name" && (
+                <div key={field}>
+                  <label className="label">{Case.capital(field)}</label>
+                  {createElement(field)}
+                </div>
+              )
           )}
       </div>
       <div key="footer" className={styles.footer}>

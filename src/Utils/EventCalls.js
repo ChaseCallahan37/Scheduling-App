@@ -6,7 +6,7 @@ const baseUrl = process.env.REACT_APP_LOCAL_API;
 export const getEvents = async () => {
   try {
     const response = await axios({
-      url: `${baseUrl}/event`,
+      url: `${baseUrl}/events`,
       method: "GET",
       headers: {
         Accept: "application/json",
@@ -23,7 +23,7 @@ export const getEvents = async () => {
 export const createEvent = async (data) => {
   try {
     const response = await axios({
-      url: `${baseUrl}/event`,
+      url: `${baseUrl}/events`,
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -41,7 +41,7 @@ export const createEvent = async (data) => {
 export const updateEvent = async (data) => {
   try {
     const response = await axios({
-      url: `${baseUrl}/event/${data.id}`,
+      url: `${baseUrl}/events/${data.id}`,
       method: "PUT",
       headers: {
         Accept: "application/json",
@@ -59,8 +59,25 @@ export const updateEvent = async (data) => {
 export const deleteEvent = async (id) => {
   try {
     const response = await axios({
-      url: `${baseUrl}/event/${id}`,
+      url: `${baseUrl}/events/${id}`,
       method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    return await response.data;
+  } catch (er) {
+    await er;
+    console.log(er);
+  }
+};
+
+export const getEventSizes = async () => {
+  try {
+    const response = await axios({
+      url: `${baseUrl}/events/sizes`,
+      method: "GET",
       headers: {
         Accept: "application/json",
         "Content-Type": "application/json",

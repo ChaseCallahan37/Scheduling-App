@@ -1,66 +1,70 @@
 import React, { useState, useEffect } from "react";
 import Card from "../common/Card";
 import Popup from "../common/Popup";
-import ShowAvailability from "../common/ShowAvailability";
 import Resource from "./../../Classes/ResourceClass";
-import TypeSelector from "../common/TypeSelector";
-import CheckboxGroup from "../common/CheckboxGroup";
-import SelectBox from "../common/SelectBox";
-import Calendar from "../common/Calendar";
 import "./ResourceTable.css";
+import {
+  getResources,
+  createResource,
+  updateResource,
+  deleteResource,
+} from "../../Utils/ResourceCalls";
 
 const ResourceTable = () => {
   const [resources, setResources] = useState(null);
-  const [showBlank, setShowBlank] = useState(false);
-  const [newResource, setNewResource] = useState(new Resource());
+  const [newResource, setNewResource] = useState(null);
 
   useEffect(() => {
-    if (resources === null) {
-      const pulledResources = [];
-      setResources(pulledResources);
-    }
-  });
-  const handleOnChange = ({ name, value }) => {
-    const copynewResource = { ...newResource };
-    if (name.includes(".")) {
-      const path = name.split(".");
-      copynewResource[path[0]][path[1]] = value;
+    pullResources();
+  }, []);
+
+  const pullResources = async () => {
+    const pulledResources = await getResources();
+    setResources(pulledResources);
+  };
+
+  const handleUpdate = ({ name, value }) => {
+    setNewResource({ ...newResource, [name]: value });
+  };
+
+  const handleEditClick = (id) => {
+    const editResource = {
+      ...resources.find((resource) => resource.id === id),
+    };
+    setNewResource(editResource);
+  };
+
+  const handleSaveResource = async () => {
+    const finishResource = { ...newResource };
+    const isEdit = resources.find((e) => e.id === finishResource.id);
+    if (isEdit) {
+      await updateResource(finishResource);
     } else {
-      copynewResource[name] = value;
-      setNewResource(copynewResource);
+      await createResource(finishResource);
+    }
+    await createResource(newResource);
+    setNewResource(null);
+    pullResources();
+  };
+  const handleRemove = async (id) => {
+    try {
+      await deleteResource(id);
+      pullResources();
+    } catch (er) {
+      console.log(er);
     }
   };
-  const handleSaveResource = () => {
-    setNewResource(new Resource());
-    setShowBlank(false);
-    const pulledResources = [];
-    setResources(pulledResources);
-  };
+
   const handleCloseModal = () => {
-    setShowBlank(false);
-    setNewResource(new Resource());
-    const pulledResources = [];
-    setResources(pulledResources);
+    setNewResource(null);
   };
-  const handleEditResource = (id) => {
-    if (!showBlank) {
-      const copyResources = [...resources];
-      const res = copyResources.find((resource) => resource.id === id);
-      setNewResource(res);
-      setShowBlank(true);
-    }
-  };
-  const copynewResource = { ...newResource };
-  const { type, name, availability, constraints } = copynewResource;
 
   return (
     <div>
       <div className="d-md-flex justify-content-md-end">
         <button
           className="button"
-          onClick={() => {
-            !showBlank && setShowBlank(true);
-          }}
+          onClick={() => setNewResource(new Resource())}
         >
           Add Resource
         </button>
@@ -70,16 +74,17 @@ const ResourceTable = () => {
           resources.map((resource) => (
             <Card
               key={resource.id}
-              onEdit={handleEditResource}
+              onEdit={handleEditClick}
               item={resource}
+              onRemove={handleRemove}
             />
           ))}
 
-        {showBlank && (
+        {newResource && (
           <Popup
-            open={true}
+            open={newResource ? true : false}
             item={newResource}
-            update={handleOnChange}
+            update={handleUpdate}
             save={handleSaveResource}
             onClose={handleCloseModal}
           />

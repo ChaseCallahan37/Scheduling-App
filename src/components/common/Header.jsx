@@ -5,7 +5,7 @@ import "./Header.css";
 
 //Header, always visible
 
-class CourseHeader extends Component {
+class Header extends Component {
   constructor(props) {
     super(props);
     this.state = {};
@@ -42,4 +42,4 @@ class CourseHeader extends Component {
   }
 }
 
-export default CourseHeader;
+export default Header;
