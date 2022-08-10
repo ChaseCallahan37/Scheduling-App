@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Case from "case";
+import _ from "lodash";
 import Calendar from "./Calendar";
 import {
   isInstructorField,
@@ -10,124 +11,61 @@ import getEnum from "./../../Utils/Enums";
 import TypeSelector from "./TypeSelector";
 import RangeSelect from "./RangeSelect";
 import CheckboxGroup from "./CheckboxGroup";
-import { getEvents } from "../../Utils/EventCalls";
+import { getEvents, getEventSizes } from "../../Utils/EventCalls";
+import { getResourceTypes } from "../../Utils/ResourceCalls";
 
 const Form = (props) => {
-  const [isInstructor, setIsInstructor] = useState(true);
-  const [instructorConstraints, setInstructorConstraints] = useState(
-    getEnum("InstructorConstraints")
-  );
-  const [teachingStyles, setTeachingStyles] = useState(
-    instructorConstraints.TeachingStyle
-  );
-  const [taConstraints, setTaConstraints] = useState({});
+  const { item, update } = props;
+
+  const [fields, setFields] = useState(Object.keys(item));
+  const [resourceTypes, setResourceTypes] = useState([]);
+  const [eventSizes, setEventSizes] = useState([]);
 
   useEffect(() => {
-    const callCourses = async () => {
-      const courses = {};
-      const data = await getEvents();
-      data.forEach(
-        (course) => (courses[Case.camel(course.name)] = course.name)
-      );
-      setTaConstraints({ courses });
+    const pullResourceTypes = async () => {
+      const pulledResourceTypes = await getResourceTypes();
+      setResourceTypes(pulledResourceTypes);
     };
-    callCourses();
+    const pullEventSizes = async () => {
+      const pulledEventSizes = await getEventSizes();
+      setEventSizes(pulledEventSizes);
+    };
+    pullResourceTypes();
+    pullEventSizes();
   }, []);
-
-  const { item, update } = props;
-  let fieldNames;
-  if (item) {
-    fieldNames = Object.keys(item);
-  }
 
   const renderElement = (field) => {
     switch (field) {
       case "name":
-      case "info":
         return (
-          <div>
-            <label className="label">{Case.capital(field)}</label>
-            <br></br>
-            <input
-              value={item[field]}
-              onChange={(e) => update({ value: e.target.value, name: field })}
-              className="global-input"
-            />
-            <hr></hr>
-          </div>
-        );
-        break;
-      case "type":
-        const values = Object.keys(getEnum(field));
-        return wrapInDivAndLabel(
-          field,
-          <TypeSelector
-            update={(data) => {
-              if (data.value.toLowerCase() === "instructor") {
-                setIsInstructor(true);
-              } else {
-                setIsInstructor(false);
-              }
-              update(data);
-            }}
-            name={field}
-            items={values}
+          <input
+            value={item[field]}
+            onChange={(e) => update({ value: e.target.value, name: field })}
+            className="global-input"
           />
         );
         break;
+
+      case "type":
+        return (
+          <TypeSelector items={resourceTypes} name={field} update={update} />
+        );
+        break;
+
+      case "eventSize":
+        return (
+          <CheckboxGroup
+            items={eventSizes}
+            name={field}
+            update={update}
+            currValues={item[field]}
+          />
+        );
+        break;
+
       case "availability":
         return (
-          <div>
-            <label className="label">{Case.capital(field)}</label>
-            <Calendar update={update} name={field} availability={item[field]} />
-            <hr></hr>
-          </div>
-        );
-        break;
-      case "constraints":
-        const constraints = isInstructor
-          ? instructorConstraints
-          : taConstraints;
-        const constraintNames = Object.keys(constraints);
-        return wrapInDivAndLabel(
-          field,
-          constraintNames.map((constraintName) => (
-            <div key={constraintName}>
-              <label className="label">{Case.capital(constraintName)}</label>
-              <CheckboxGroup
-                update={(value) => {
-                  const newConstraint = { [constraintName]: value };
-                  const copyConstraints = [...item[field]];
-                  const index = copyConstraints.findIndex(
-                    (constraint) => constraint[constraintName]
-                  );
-                  index !== -1
-                    ? (copyConstraints[index] = newConstraint)
-                    : copyConstraints.push(newConstraint);
-                  const data = { name: field, value: copyConstraints };
-                  update({ name: field, value: copyConstraints });
-                }}
-                value={item[field].find((c) =>
-                  c[constraintName] ? c[constraintName] : null
-                )}
-                name={constraintName}
-                items={constraints[constraintName]}
-              />
-            </div>
-          ))
-        );
-        break;
-      case "resources":
-        return wrapInDivAndLabel(
-          field,
-          <RangeSelect items={item[field]} name={field} update={update} />
-        );
-        break;
-      case "teachingStyle":
-        const items = Object.keys(teachingStyles);
-        return wrapInDivAndLabel(
-          field,
-          <TypeSelector update={update} name={field} items={items} />
+          <Calendar update={update} name={field} availability={item[field]} />
         );
         break;
 
@@ -138,10 +76,16 @@ const Form = (props) => {
   };
   return (
     <div>
-      {fieldNames &&
-        fieldNames.map((field) => {
-          return <div key={field}>{renderElement(field)}</div>;
-        })}
+      {fields &&
+        fields.map(
+          (field) =>
+            field !== "id" && (
+              <div key={field}>
+                <label className="label">{Case.capital(field)}</label>
+                {renderElement(field)}
+              </div>
+            )
+        )}
     </div>
   );
 };

@@ -1,9 +1,10 @@
-import { v4 as uuidv4 } from "uuid";
+import short from "short-uuid";
+const translator = short();
 
 class Resource {
   constructor(
     resourceFields = {
-      id: uuidv4(),
+      id: translator.new(),
       name: "",
       availability: [],
       type: "",
@@ -13,9 +14,9 @@ class Resource {
     const { id, name, availability, type, eventSize } = resourceFields;
     this.id = id;
     this.name = name;
-    this.availability = availability;
     this.type = type;
     this.eventSize = eventSize;
+    this.availability = availability;
   }
 }
 

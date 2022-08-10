@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Calendar from "../common/Calendar";
-import CardPopup from "../common/CardPopup";
+import Popup from "../common/Popup";
 import Event from "../../Classes/EventClass";
 import Card from "../common/Card";
 import {
@@ -12,9 +12,7 @@ import {
 
 const EventTable = () => {
   const [events, setEvents] = useState(null);
-  const [showBlank, setShowBlank] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
-  const [newEvent, setNewEvent] = useState(new Event());
+  const [newEvent, setNewEvent] = useState(null);
 
   useEffect(() => {
     pullEvents();
@@ -24,33 +22,22 @@ const EventTable = () => {
     const pulledEvents = await getEvents();
     setEvents(pulledEvents);
   };
-  const checkEditEvent = (pulledEvents) => {
-    return pulledEvents ? pulledEvents.filter((c) => c.id !== newEvent.id) : [];
-  };
-  const handleOnChange = ({ name, value }) => {
+  const handleUpdate = ({ name, value }) => {
     setNewEvent({ ...newEvent, [name]: value });
   };
-  const handleEdit = (id) => {
-    if (!showBlank) {
-      const eventsCopy = [...events];
-      const editEvent = eventsCopy.find((event) => event.id === id);
-      setNewEvent(editEvent);
-      setShowBlank(true);
-      setIsEdit(true);
-      setEvents(eventsCopy);
-    }
+  const handleEditClick = (id) => {
+    const editEvent = { ...events.find((event) => event.id === id) };
+    setNewEvent(editEvent);
   };
   const handleSaveEvent = async () => {
-    const data = { ...newEvent };
-    let createdEvent;
+    const finishEvent = { ...newEvent };
+    const isEdit = events.find((e) => e.id === finishEvent.id);
     if (isEdit) {
-      createdEvent = await updateEvent(data);
+      await updateEvent(finishEvent);
     } else {
-      createdEvent = await createEvent(data);
+      await createEvent(finishEvent);
     }
-    setShowBlank(false);
-    setIsEdit(false);
-    setNewEvent(new Event());
+    setNewEvent(null);
     pullEvents();
   };
   const handleRemove = async (id) => {
@@ -62,18 +49,12 @@ const EventTable = () => {
     }
   };
   const handleCloseModal = async () => {
-    setNewEvent(new Event());
-    setShowBlank(false);
-  };
-  const updateNewClass = (field, content) => {
-    const newEvent = { ...newEvent };
-    newEvent[field] = content;
-    setNewEvent(newEvent);
+    setNewEvent(null);
   };
   return (
     <div>
       <div key={"div1"} className="d-md-flex justify-content-md-end">
-        <button className="button" onClick={() => setShowBlank(true)}>
+        <button className="button" onClick={() => setNewEvent(new Event())}>
           Add Event
         </button>
       </div>
@@ -83,15 +64,15 @@ const EventTable = () => {
             <Card
               key={event.id}
               item={event}
-              onEdit={handleEdit}
+              onEdit={handleEditClick}
               onRemove={handleRemove}
             />
           ))}
-        {showBlank && (
-          <CardPopup
-            open={true}
+        {newEvent && (
+          <Popup
+            open={newEvent ? true : false}
             item={newEvent}
-            update={handleOnChange}
+            update={handleUpdate}
             save={handleSaveEvent}
             onClose={handleCloseModal}
           />

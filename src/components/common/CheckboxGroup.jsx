@@ -3,48 +3,44 @@ import Case from "case";
 import "./CheckboxGroup.css";
 
 function CheckboxGroup(props) {
-  const [chosen, setChosen] = useState([]);
-
-  useEffect(() => {
-    if (value) {
-      const copyChosen = [...chosen, ...value[name]];
-      setChosen(copyChosen);
-    }
-  }, []);
-
-  const { items, name, update, value } = props;
-  const itemNames = Object.keys(items);
+  const { items, update, name, currValues } = props;
+  const [selected, setSelected] = useState(currValues || []);
 
   const handleUpdate = (e) => {
     const { value } = e.target;
-    const copyChosen = [...chosen];
-    const index = copyChosen.findIndex((chose) => chose === value);
-    index !== -1 ? copyChosen.splice(index, 1) : copyChosen.push(value);
-    setChosen(copyChosen);
-    update(copyChosen);
+    update({ name: name, value: value.toLowerCase() });
+    setSelected([...selected, value.toLowerCase()]);
   };
-  const checkChecked = (itemName) => {
-    if (value && value[name] && value[name].includes(itemName)) {
-      return true;
-    }
-    return false;
-  };
+
   return (
-    <div onChange={handleUpdate}>
-      {itemNames &&
-        itemNames.map((itemName) => (
-          <div key={itemName}>
-            <label>{Case.capital(itemName)}</label>
-            <input
-              checked={checkChecked(itemName)}
-              onChange={() => {}}
-              type="checkbox"
-              value={itemName}
-              className="resource-checkbox"
-            />
-          </div>
-        ))}
-    </div>
+    <form
+      key={name}
+      onSubmit={(e) => {
+        e.preventDefault();
+        debugger;
+      }}
+    >
+      {items &&
+        items.map((item) => {
+          return (
+            <div key={item}>
+              <label className="label">{Case.capital(item)}</label>
+              <input
+                checked={
+                  currValues && currValues.includes(item.toLowerCase())
+                    ? true
+                    : false
+                }
+                onChange={handleUpdate}
+                type="checkbox"
+                className="resource-checkbox"
+                name={name}
+                value={item}
+              />
+            </div>
+          );
+        })}
+    </form>
   );
 }
 

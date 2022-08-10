@@ -1,19 +1,14 @@
 import React, { useState } from "react";
 import Modal from "react-modal";
 import Form from "./Form";
-import "./CardPopup.css";
+import "./Popup.css";
 
 Modal.setAppElement("#root");
 
-function CardPopup(props) {
+function Popup(props) {
   const { item, update, save, open, onClose } = props;
 
   const [isOpen, setIsOpen] = useState(open);
-
-  //   const afterOpenModal = () => {
-  //     // references are now sync'd and can be accessed.
-  //     subtitle.style.color = "#f00";
-  //   };
 
   const closeModal = () => {
     setIsOpen(false);
@@ -52,4 +47,4 @@ function CardPopup(props) {
   );
 }
 
-export default CardPopup;
+export default Popup;
