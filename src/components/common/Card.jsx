@@ -6,7 +6,7 @@ import { getRandomId } from "../../Utils/UtilFunctions";
 import List from "./List";
 
 const Card = (props) => {
-  const { content, item, onEdit, onRemove } = props;
+  const { item, onEdit, onRemove } = props;
 
   const [showPopup, setShowPopup] = useState(false);
   const [fields, setFields] = useState(Object.keys(item));
