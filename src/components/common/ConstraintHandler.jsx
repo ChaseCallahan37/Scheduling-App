@@ -9,7 +9,10 @@ function ConstraintHandler(props) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    //Pulls in select and input elements from form
     const { select, input } = e.target;
+    //Create constraint obj to hold stringified function and
+    //actual function.
     const constraint = {
       str: `return value.${Case.camel(
         select.value
@@ -17,8 +20,8 @@ function ConstraintHandler(props) {
       func: null,
     };
     constraint.func = stringToFunction(constraint.str);
+    //Updating state below
     const copyConstraints = constraints ? [...constraints] : [];
-    console.log(copyConstraints);
     copyConstraints.push(constraint);
     update({ name: "constraints", value: copyConstraints });
   };

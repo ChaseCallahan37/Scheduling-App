@@ -1,4 +1,5 @@
 import axios from "axios";
+import { parseConstraints } from "./UtilFunctions";
 
 // const baseUrl = process.env.REACT_APP_SCHEDULING_API;
 const baseUrl = process.env.REACT_APP_LOCAL_API;
@@ -13,6 +14,7 @@ export const getResources = async () => {
         "Content-Type": "application/json",
       },
     });
+    response.data = parseConstraints(response.data);
     return response.data;
   } catch (er) {
     await er;
@@ -21,6 +23,7 @@ export const getResources = async () => {
 };
 
 export const createResource = async (data) => {
+  debugger;
   try {
     const response = await axios({
       url: `${baseUrl}/resources`,

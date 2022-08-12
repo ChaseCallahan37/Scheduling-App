@@ -35,6 +35,10 @@ const Card = (props) => {
 
       case "eventSize":
         return <span>{Case.capital(item[field])}</span>;
+        break;
+
+      case "constraints":
+        return <List items={item[field]} name={field} path={["str"]} />;
 
       default:
         return null;
