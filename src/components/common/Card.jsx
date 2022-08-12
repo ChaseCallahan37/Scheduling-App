@@ -55,6 +55,7 @@ const Card = (props) => {
                 <div key={field}>
                   <label className="label">{Case.capital(field)}</label>
                   {createElement(field)}
+                  <hr></hr>
                 </div>
               )
           )}

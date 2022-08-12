@@ -83,6 +83,7 @@ const Form = (props) => {
               <div key={field}>
                 <label className="label">{Case.capital(field)}</label>
                 {renderElement(field)}
+                <hr></hr>
               </div>
             )
         )}
