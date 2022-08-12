@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getEvents } from "./../../Utils/EventCalls";
+import { stringToFunction, functionToString } from "../../Utils/UtilFunctions";
 import Card from "./../common/Card";
 import JSONfn from "json-fn";
 
@@ -54,40 +55,21 @@ const ConstraintWindow = (props) => {
     e.preventDefault();
     const { value: input, name } = e.target[id];
 
-    //Executes immediately
-    function stringToFunctionAndExecute(str) {
-      let func = new Function(str);
-      return func(); // <--- note the parenteces
-    }
-
-    //Executes when called
-    function stringToFunction(str) {
-      let func = new Function("value", str);
-      debugger;
-      return func;
-    }
-
-    // -^-^-^- Functions -^-^-^- (feel free to copy)
-    // -v-v-v- Explanations -v-v-v- (run code to read easier)
-
-    // let func_B = stringToFunctionOnly(
-    //   `console.log('>>> executes when called ${input}<<<')`
-    // );
-
-    // func_B();
-
-    // const constraint = stringToFunctionOnly(
-    //   `const myFunc = () => { if() console.log("${input}") }; myFunc()`
-    // );
-
-    const constraint = stringToFunctionOnly(`if(value === "${input}"){
-        console.log("yes")
-    } else {
-        console.log("no")
-    }`);
+    const constraint = {
+      str: `if(value === "${input}"){
+          console.log("Same name")
+        } else {
+          console.log("Not same name")
+        }`,
+      func: null,
+    };
+    constraint.func = stringToFunction(constraint.str);
+    doesWork(constraint);
   };
-  const doesItWork = (value) => {
-    console.log(value);
+  const doesWork = (obj) => {
+    console.log(obj.str);
+    console.log(obj.func);
+    obj.func("JON");
   };
   return (
     <form onSubmit={handleSubmit}>

@@ -44,9 +44,5 @@ export const checkIsPromise = (obj) => {
 };
 
 export const stringToFunction = (str) => {
-  let func = new Function("value", str);
-  debugger;
-  return func;
+  return new Function("value", str);
 };
-
-export const functionToString = (func) => {};

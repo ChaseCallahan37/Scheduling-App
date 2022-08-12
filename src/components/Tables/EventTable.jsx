@@ -31,6 +31,7 @@ const EventTable = () => {
   };
   const handleSaveEvent = async () => {
     const finishEvent = { ...newEvent };
+    finishEvent.constraints = JSON.stringify(finishEvent.constraints);
     const isEdit = events.find((e) => e.id === finishEvent.id);
     if (isEdit) {
       await updateEvent(finishEvent);

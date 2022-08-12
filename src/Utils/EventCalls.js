@@ -13,6 +13,11 @@ export const getEvents = async () => {
         "Content-Type": "application/json",
       },
     });
+    if (response.data.constraints) {
+      response.data.constraints = JSON.parse(response.data.constraints);
+    } else {
+      response.data.constraints = [];
+    }
     return response.data;
   } catch (er) {
     await er;
