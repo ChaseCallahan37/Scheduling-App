@@ -29,7 +29,10 @@ function ConstraintHandler(props) {
   return (
     <div>
       <span>Current Constraints: </span>
-      {constraints && constraints.map((constraint) => <p>{constraint.str}</p>)}
+      {constraints &&
+        constraints.map((constraint) => (
+          <p key={constraint.str}>{constraint.str}</p>
+        ))}
       <form onSubmit={(e) => handleSubmit(e)}>
         <label>New Constraint</label>
         <select name="select">
