@@ -36,13 +36,14 @@ const ResourceTable = () => {
 
   const handleSaveResource = async () => {
     const finishResource = { ...newResource };
+    finishResource.constraints = JSON.stringify(finishResource.constraints);
     const isEdit = resources.find((e) => e.id === finishResource.id);
     if (isEdit) {
       await updateResource(finishResource);
     } else {
       await createResource(finishResource);
     }
-    await createResource(newResource);
+    createResource(newResource);
     setNewResource(null);
     pullResources();
   };

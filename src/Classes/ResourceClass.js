@@ -9,14 +9,17 @@ class Resource {
       availability: [],
       type: "",
       eventSize: "",
+      constraints: [],
     }
   ) {
-    const { id, name, availability, type, eventSize } = resourceFields;
+    const { id, name, availability, type, eventSize, constraints } =
+      resourceFields;
     this.id = id;
     this.name = name;
     this.type = type;
     this.eventSize = eventSize;
     this.availability = availability;
+    this.constraints = constraints;
   }
 }
 

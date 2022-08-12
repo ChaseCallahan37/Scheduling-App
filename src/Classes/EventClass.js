@@ -8,13 +8,15 @@ class Event {
       name: "",
       availability: [],
       eventSize: "",
+      constraints: [],
     }
   ) {
-    const { id, name, availability, eventSize } = courseFields;
+    const { id, name, availability, eventSize, constraints } = courseFields;
     this.id = id;
     this.name = name;
     this.eventSize = eventSize;
     this.availability = availability;
+    this.constraints = constraints;
   }
 }
 

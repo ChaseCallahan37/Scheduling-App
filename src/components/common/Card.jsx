@@ -6,7 +6,7 @@ import { getRandomId } from "../../Utils/UtilFunctions";
 import List from "./List";
 
 const Card = (props) => {
-  const { content, item, onEdit, onRemove } = props;
+  const { item, onEdit, onRemove } = props;
 
   const [showPopup, setShowPopup] = useState(false);
   const [fields, setFields] = useState(Object.keys(item));
@@ -35,6 +35,10 @@ const Card = (props) => {
 
       case "eventSize":
         return <span>{Case.capital(item[field])}</span>;
+        break;
+
+      case "constraints":
+        return <List items={item[field]} name={field} path={["str"]} />;
 
       default:
         return null;

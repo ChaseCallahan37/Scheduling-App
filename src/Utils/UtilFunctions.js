@@ -42,3 +42,23 @@ export const checkIsPromise = (obj) => {
     return false;
   }
 };
+
+export const stringToFunction = (str) => {
+  return new Function("value", str);
+};
+
+export const parseConstraints = (objects) => {
+  if (objects) {
+    objects.forEach((obj) => {
+      if (!obj.constraints) {
+        obj.constraints = [];
+      } else {
+        obj.constraints = JSON.parse(obj.constraints);
+        obj.constraints.forEach(
+          (constraint) => (constraint.func = stringToFunction(constraint.str))
+        );
+      }
+    });
+    return objects;
+  }
+};

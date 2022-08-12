@@ -1,5 +1,6 @@
 import axios from "axios";
 import getEnum from "./Enums";
+import { parseConstraints } from "./UtilFunctions";
 
 const baseUrl = process.env.REACT_APP_SCHEDULING_API;
 //const baseUrl = process.env.REACT_APP_LOCAL_API;
@@ -13,6 +14,7 @@ export const getEvents = async () => {
         "Content-Type": "application/json",
       },
     });
+    response.data = parseConstraints(response.data);
     return response.data;
   } catch (er) {
     await er;

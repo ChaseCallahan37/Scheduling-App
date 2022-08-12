@@ -13,6 +13,7 @@ import RangeSelect from "./RangeSelect";
 import CheckboxGroup from "./CheckboxGroup";
 import { getEvents, getEventSizes } from "../../Utils/EventCalls";
 import { getResourceTypes } from "../../Utils/ResourceCalls";
+import ConstraintHandler from "./ConstraintHandler";
 
 const Form = (props) => {
   const { item, update } = props;
@@ -30,8 +31,11 @@ const Form = (props) => {
       const pulledEventSizes = await getEventSizes();
       setEventSizes(pulledEventSizes);
     };
-    pullResourceTypes();
-    pullEventSizes();
+    const makeInitialCalls = async () => {
+      await pullResourceTypes();
+      await pullEventSizes();
+    };
+    makeInitialCalls();
   }, []);
 
   const renderElement = (field) => {
@@ -67,6 +71,10 @@ const Form = (props) => {
         return (
           <Calendar update={update} name={field} availability={item[field]} />
         );
+        break;
+
+      case "constraints":
+        return <ConstraintHandler item={item} update={update} />;
         break;
 
       default:
