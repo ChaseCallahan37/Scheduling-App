@@ -6,9 +6,6 @@ import EventContext from "../../Contexts/EventContext";
 import ResourceContext from "../../Contexts/ResourceContext";
 
 function TestTable(props) {
-  const [events, setEvents] = useState([]);
-  const [window, setWindow] = useState(false);
-  const [selectedId, setSelectedId] = useState(null);
   const [list, setList] = useState([
     "Item 1",
     "Item 2",
@@ -18,47 +15,34 @@ function TestTable(props) {
     "Item 6",
   ]);
 
-  const eventContext = useContext(EventContext);
-  const resourceContext = useContext(ResourceContext);
-  console.log("Events: ", eventContext.events);
-  console.log("Resources: ", resourceContext.resources);
+  const { events, setEvents } = useContext(EventContext);
+  const { resources } = useContext(ResourceContext);
 
   const dragItem = useRef();
   const dragOverItem = useRef();
 
   const dragStart = (e, position) => {
     dragItem.current = position;
-    console.log("Drag start", e.target.innerHTML);
   };
 
   const dragEnter = (e, position) => {
     dragOverItem.current = position;
-    console.log("drag enter", e.target.innerHTML);
   };
 
   const drop = (e) => {
-    const copyListItems = [...list];
-    const dragItemContent = copyListItems[dragItem.current];
-    copyListItems.splice(dragItem.current, 1);
-    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    const copyEvents = [...events];
+    const dragItemContent = copyEvents[dragItem.current];
+    copyEvents.splice(dragItem.current, 1);
+    copyEvents.splice(dragOverItem.current, 0, dragItemContent);
     dragItem.current = null;
     dragOverItem.current = null;
-    setList(copyListItems);
-  };
-
-  useEffect(() => {
-    pullEvents();
-  }, []);
-
-  const pullEvents = async () => {
-    const pulledEvents = await getEvents();
-    setEvents(pulledEvents);
+    setEvents(copyEvents);
   };
 
   return (
     <div>
-      {list &&
-        list.map((item, index) => (
+      {events &&
+        events.map((event, index) => (
           <div
             style={{
               backgroundColor: "lightblue",
@@ -72,45 +56,31 @@ function TestTable(props) {
             key={index}
             draggable
           >
-            {item}
+            {event.name}
           </div>
         ))}
-      {}
+      <br></br>
+      <br></br>
+      {resources &&
+        resources.map((resource, index) => (
+          <div
+            style={{
+              backgroundColor: "lightblue",
+              margin: "20px 25%",
+              textAlign: "center",
+              fontSize: "40px",
+            }}
+            onDragStart={(e) => dragStart(e, index)}
+            onDragEnter={(e) => dragEnter(e, index)}
+            onDragEnd={drop}
+            key={index}
+            draggable
+          >
+            {resource.name}
+          </div>
+        ))}
     </div>
   );
 }
-
-const ConstraintWindow = (props) => {
-  const { id } = props;
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const { value: input, name } = e.target[id];
-
-    const constraint = {
-      str: `if(value === "${input}"){
-          console.log("Same name")
-        } else {
-          console.log("Not same name")
-        }`,
-      func: null,
-    };
-    constraint.func = stringToFunction(constraint.str);
-    doesWork(constraint);
-  };
-  const doesWork = (obj) => {
-    console.log(obj.str);
-    console.log(obj.func);
-    obj.func("JON");
-  };
-  return (
-    <form onSubmit={handleSubmit}>
-      <p>Id: {id}</p>
-      <label name="label">Name must be:</label>
-      <input name={id} />
-      <button>submit</button>
-    </form>
-  );
-};
 
 export default TestTable;

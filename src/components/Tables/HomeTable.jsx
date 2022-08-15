@@ -9,14 +9,9 @@ class HomeTable extends Component {
     resources: [],
   };
 
-  sendData = async () => {};
-
   render() {
     return (
       <div className="d-md-flex justify-content-md-end">
-        <button className="button" onClick={this.sendData}>
-          Make Schedule
-        </button>
         <br></br>
         <br></br>
       </div>
