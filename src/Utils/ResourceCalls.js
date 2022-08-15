@@ -1,8 +1,8 @@
 import axios from "axios";
 import { parseConstraints } from "./UtilFunctions";
 
-// const baseUrl = process.env.REACT_APP_SCHEDULING_API;
-const baseUrl = process.env.REACT_APP_LOCAL_API;
+const baseUrl = process.env.REACT_APP_SCHEDULING_API;
+// const baseUrl = process.env.REACT_APP_LOCAL_API;
 
 export const getResources = async () => {
   try {
