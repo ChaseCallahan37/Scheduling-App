@@ -1,13 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, useContext } from "react";
 import { getEvents } from "./../../Utils/EventCalls";
 import { stringToFunction, functionToString } from "../../Utils/UtilFunctions";
 import Card from "./../common/Card";
-import JSONfn from "json-fn";
+import EventContext from "../../Contexts/EventContext";
+import ResourceContext from "../../Contexts/ResourceContext";
 
 function TestTable(props) {
   const [events, setEvents] = useState([]);
   const [window, setWindow] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
+  const [list, setList] = useState([
+    "Item 1",
+    "Item 2",
+    "Item 3",
+    "Item 4",
+    "Item 5",
+    "Item 6",
+  ]);
+
+  const eventContext = useContext(EventContext);
+  const resourceContext = useContext(ResourceContext);
+  console.log("Events: ", eventContext.events);
+  console.log("Resources: ", resourceContext.resources);
+
+  const dragItem = useRef();
+  const dragOverItem = useRef();
+
+  const dragStart = (e, position) => {
+    dragItem.current = position;
+    console.log("Drag start", e.target.innerHTML);
+  };
+
+  const dragEnter = (e, position) => {
+    dragOverItem.current = position;
+    console.log("drag enter", e.target.innerHTML);
+  };
+
+  const drop = (e) => {
+    const copyListItems = [...list];
+    const dragItemContent = copyListItems[dragItem.current];
+    copyListItems.splice(dragItem.current, 1);
+    copyListItems.splice(dragOverItem.current, 0, dragItemContent);
+    dragItem.current = null;
+    dragOverItem.current = null;
+    setList(copyListItems);
+  };
 
   useEffect(() => {
     pullEvents();
@@ -20,30 +57,25 @@ function TestTable(props) {
 
   return (
     <div>
-      {window && <ConstraintWindow id={selectedId} />}
-      {events &&
-        events.map((event) => {
-          return (
-            <div>
-              <Card
-                key={event.id}
-                item={event}
-                onEdit={() => {}}
-                onRemove={() => {}}
-              />
-              <button
-                onClick={() => {
-                  setWindow(!window);
-                  setSelectedId(event.id);
-                }}
-              >
-                Add constraint {"("}
-                {event.name}
-                {")"}
-              </button>
-            </div>
-          );
-        })}
+      {list &&
+        list.map((item, index) => (
+          <div
+            style={{
+              backgroundColor: "lightblue",
+              margin: "20px 25%",
+              textAlign: "center",
+              fontSize: "40px",
+            }}
+            onDragStart={(e) => dragStart(e, index)}
+            onDragEnter={(e) => dragEnter(e, index)}
+            onDragEnd={drop}
+            key={index}
+            draggable
+          >
+            {item}
+          </div>
+        ))}
+      {}
     </div>
   );
 }
