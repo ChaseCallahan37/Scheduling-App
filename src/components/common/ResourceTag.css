@@ -1,0 +1,48 @@
+body {
+  font-family: "Open Sans", sans-serif;
+}
+
+.tag-container {
+  position: absolute;
+  height: 300px;
+  width: 600px;
+  top: 60px;
+  left: calc(50% - 300px);
+  display: flex;
+}
+
+.tag-card {
+  display: flex;
+  height: 150px;
+  width: 200px;
+  background-color: #666;
+  border-radius: 10px;
+  box-shadow: -1rem 0 3rem #000000;
+  /*   margin-left: -50px; */
+  transition: 0.4s ease-out;
+  position: relative;
+  left: 0px;
+}
+
+.tag-card:not(:first-child) {
+  margin-top: 50px;
+}
+
+.tag-card:hover {
+  transform: translateY(-20px);
+  transition: 0.4s ease-out;
+}
+
+.tag-card:hover ~ .tag-card {
+  position: relative;
+  left: 50px;
+  transition: 0.4s ease-out;
+}
+
+.tag-title {
+  color: white;
+  font-weight: 300;
+  position: absolute;
+  left: 20px;
+  top: 15px;
+}
