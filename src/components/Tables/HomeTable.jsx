@@ -12,11 +12,6 @@ class HomeTable extends Component {
 
   render() {
     return (
-<<<<<<< HEAD
-      <div className="d-md-flex justify-content-md-end">
-        <br></br>
-        <br></br>
-=======
       <div>
         <ResourceTag />
         <div className="d-md-flex justify-content-md-end">
@@ -26,7 +21,6 @@ class HomeTable extends Component {
           <br></br>
           <br></br>
         </div>
->>>>>>> dfa22f1ab53a194d93526d63fa0957af7400b144
       </div>
     );
   }
